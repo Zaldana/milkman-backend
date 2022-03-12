@@ -1,18 +1,53 @@
 const mongoose = require("mongoose");
 
-const ProductSchema = new mongoose.Schema(
-
+const priceSchema = new mongoose.Schema(    
     {
-        upc: {
-            type: String
+        regular: {
+            type: Number
+        }
+    }
+)
+
+const itemsSchema = new mongoose.Schema(
+    {
+        price: {
+            type: priceSchema
         },
 
+        size: {
+            type: String
+        }
+        
+    } 
+)
+
+const sizesSchema = new mongoose.Schema(
+    {
+        size: {
+            type: String,
+            default: "large"
+        },
+
+        url: {
+            type: String
+        }
+    }
+)
+
+const imagesSchema = new mongoose.Schema(
+    {
+        perspective: {
+            type: String,
+            default: "front"
+        },
+
+        sizes: [sizesSchema]
+    }
+)
+const ProductSchema = new mongoose.Schema(
+    {
         productId: {
             type: String
-        },
-
-        aisleLocations: {
-            type: Array
         },
 
         brand: {
@@ -27,21 +62,9 @@ const ProductSchema = new mongoose.Schema(
             type: String
         },
 
-        images: {
-            type: Array
-        },
+        images: [imagesSchema],
 
-        items: {
-            type: Array
-        },
-
-        itemInformation: {
-            type: Object
-        },
-
-        temperature: {
-            type: Object
-        },
+        items: [itemsSchema]
     },
 );
 

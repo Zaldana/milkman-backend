@@ -21,6 +21,7 @@ userRouter.post('/create-user', (req, res) => {
             firstName: savedUser.firstName,
             lastName: savedUser.lastName,
             email: savedUser.email,
+    
         }
         res.send(cleanSavedUser);
     });
@@ -28,15 +29,25 @@ userRouter.post('/create-user', (req, res) => {
 
 userRouter.post('/sign-in', async (req, res) => {
 
-    const userCredentials = req.body.userCredentials;
-    const foundUser = await UserModel.findOne({ email: userCredentials.email, password: userCredentials.password })
-    const cleanFoundUser = {
-        id: foundUser.id,
-        firstName: foundUser.firstName,
-        lastName: foundUser.lastName,
-        email: foundUser.email,
+    try {
+
+        const userCredentials = req.body.userCredentials;
+        const foundUser = await UserModel.findOne({ email: userCredentials.email, password: userCredentials.password })
+        const cleanFoundUser = {
+            id: foundUser.id,
+            firstName: foundUser.firstName,
+            lastName: foundUser.lastName,
+            email: foundUser.email,
+        }
+        res.send(cleanFoundUser);
+
+    } catch (e) {
+        
+        res.status(e).json({
+            message: e.message,
+        });
     }
-    res.send(cleanFoundUser);
+ 
 });
 
 module.exports = userRouter;
